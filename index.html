@@ -88,9 +88,31 @@
         @media (min-width: 768px) {
             .timeline-container::before { left: 50%; transform: translateX(-50%); }
         }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            display: none; 
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center">
+
+
+    <audio id="bgMusic" loop>
+        <source src="Daniel Caesar - Superpowers (Official Audio).mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-control" id="musicToggle">
+        <span id="musicIcon">🎵</span>
+    </div>
 
     <div class="petals-container" id="hearts-bg"></div>
 
@@ -169,6 +191,7 @@
                     </p>
                 </div>
             </div>
+            
         </div>
 
         <div class="text-center mt-40">
@@ -181,6 +204,10 @@
 
     <script>
         const heartsContainer = document.getElementById('hearts-bg');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+
         function createHeart() {
             const heart = document.createElement('div');
             heart.innerHTML = '❤️';
@@ -217,6 +244,10 @@
         noBtn.addEventListener('click', moveButton); 
 
         yesBtn.addEventListener('click', () => {
+            // Mulai Musik
+            bgMusic.play().catch(e => console.log("Music play failed:", e));
+            musicToggle.style.display = 'block';
+
             confetti({
                 particleCount: 150,
                 spread: 100,
@@ -235,8 +266,16 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 500);
         });
+
+        musicToggle.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicIcon.innerHTML = '🎵';
+            } else {
+                bgMusic.pause();
+                musicIcon.innerHTML = '🔇';
+            }
+        });
     </script>
 </body>
 </html>
-
-
